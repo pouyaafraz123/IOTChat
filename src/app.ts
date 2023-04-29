@@ -1,38 +1,36 @@
 import express from "express";
 import bodyParser from "body-parser";
-import * as mongoose from "mongoose";
-import {DATABASE_URL} from "./database/database";
-import {graphqlHTTP} from "express-graphql";
+import { graphqlHTTP } from "express-graphql";
 import schema from "./graphql/schema";
-import resolver from "./graphql/resolver"
+import resolver from "./graphql/resolver";
 
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'OPTIONS, GET, POST, PUT, PATCH, DELETE'
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE",
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 
 app.use(
-    '/graphql',
-    graphqlHTTP({
-        schema: schema,
-        rootValue: resolver,
-        graphiql: true,
-        customFormatErrorFn: (error) => {
-            if (!error.originalError) {
-                return error;
-            }
-            return error.originalError;
-        }
-    })
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: resolver,
+    graphiql: true,
+    customFormatErrorFn: (error) => {
+      if (!error.originalError) {
+        return error;
+      }
+      return error.originalError;
+    },
+  }),
 );
 
 
@@ -40,7 +38,7 @@ app.use(
     DATABASE_URL
 )
     .then(() => {*/
-        app.listen(8080);
+app.listen(8080);
 /* })
  .catch(err => {
      console.log(err);
