@@ -3,8 +3,14 @@ import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
 import schema from "./graphql/schema";
 import resolver from "./graphql/resolver";
+import mongoose from "mongoose";
+import { DATABASE_URL } from "./database/database";
+import auth from "./middleware/Auth";
+import { createServer } from "http";
+import socket from "./socket";
 
 const app = express();
+const httpServer = createServer(app);
 
 app.use(bodyParser.json());
 
@@ -18,28 +24,37 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(auth);
+
 app.use(
   "/graphql",
   graphqlHTTP({
     schema: schema,
     rootValue: resolver,
     graphiql: true,
-    customFormatErrorFn: (error) => {
-      if (!error.originalError) {
-        return error;
+    customFormatErrorFn(err: any) {
+      console.log(err);
+      if (!err.originalError) {
+        return err;
       }
-      return error.originalError;
+      const data = err.originalError.data;
+      const message = err.message || "An error occurred.";
+      const code = err.originalError.code || 500;
+      return { message: message, status: code, data: data };
     },
   }),
 );
 
-
-/*mongoose.connect(
-    DATABASE_URL
-)
-    .then(() => {*/
-app.listen(8080);
-/* })
- .catch(err => {
-     console.log(err);
- });*/
+mongoose
+  .connect(DATABASE_URL)
+  .then(() => {
+    const io = socket.init(httpServer);
+    httpServer.listen(8080);
+    console.log("CONNECTED.");
+    io.on("connection", () => {
+      console.log("Socket Client Connected");
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

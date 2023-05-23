@@ -1,1 +1,1 @@
-export const DATABASE_URL = 'mongodb+srv://pouyaafraz:pouyaafraz@cluster0.5vbadun.mongodb.net/shop?retryWrites=true&w=majority'
+export const DATABASE_URL = "mongodb://localhost:27017/IOTChat?retryWrites=true&w=majority";
