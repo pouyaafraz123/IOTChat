@@ -3,8 +3,6 @@ import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
 import schema from "./graphql/schema";
 import resolver from "./graphql/resolver";
-import mongoose from "mongoose";
-import { DATABASE_URL } from "./database/database";
 import auth from "./middleware/Auth";
 import { createServer } from "http";
 import socket from "./socket";
@@ -45,7 +43,7 @@ app.use(
   }),
 );
 
-mongoose
+/*mongoose
   .connect(DATABASE_URL)
   .then(() => {
     const io = socket.init(httpServer);
@@ -57,4 +55,10 @@ mongoose
   })
   .catch((err) => {
     console.log(err);
-  });
+  });*/
+const io = socket.init(httpServer);
+httpServer.listen(3000);
+io.on("connection", () => {
+  console.log("Socket Client Connected");
+});
+console.log("CONNECTED.");

@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:14
+FROM node
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN npm install
 EXPOSE 3000
 
 # Run the application when the container starts
-CMD ["npm", "run dev"]
+CMD npm run dev
