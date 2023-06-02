@@ -59,7 +59,7 @@ mongoose
   .connect(DATABASE_URL)
   .then(() => {
     const io = socket.init(httpServer);
-    httpServer.listen(8080);
+    httpServer.listen(3000);
     console.log("CONNECTED.");
     io.on("connection", () => {
       console.log("Socket Client Connected");
