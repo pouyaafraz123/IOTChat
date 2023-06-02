@@ -7,7 +7,7 @@ schema {
 
 type Query{
 	# Auth related queries
-	login(data:loginParam):loginData! # check
+	login(data:loginParam!):loginData! # check
 
 	# User related queries  
 	getUsers(page: Int,per_page: Int,query: String): users! # check
