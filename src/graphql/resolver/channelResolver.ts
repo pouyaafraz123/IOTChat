@@ -18,8 +18,6 @@ export const createChannelResolver = async (
   { data }: Params<IChannelParam>,
   req: NewRequest,
 ) => {
-
-
   return await createChannel(req.user?.id, data);
 };
 
