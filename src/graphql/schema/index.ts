@@ -11,32 +11,32 @@ type Query{
 
 	# User related queries  
 	getUsers(page: Int,per_page: Int,query: String): users! # check
-	getUser(_id:String!): user! # check
+	getUser(id:String!): user! # check
 	getCurrentUser: user! # check
 	getUserByUsername(username:String!): user! #check
 	getUserByEmail(email:String!): user! #check
 
 	# Channel related queries  
 	getChannels(page: Int,per_page: Int,query: String): channels! #check
-	getChannel(_id:String!): channel! #check
+	getChannel(id:String!): channel! #check
 	getChannelByName(name:String!): channel! # check
-	getUserChannels(_id:String): [channel]! # check
+	getUserChannels(id:String): [channel]! # check
 
 	# Message related queries  
-	getChannelMessages(_id:String): messages! #check
+	getChannelMessages(id:String): messages! #check
 	# getDirectMessages(user_one__id:String!,user_two__id:String!): messages! # after
 }
 
 type Mutation{
 	createUser(data:userParam!): user! # check
 	signup(data:signupParam!):user! # check
-	updateUser(_id:String!,data:userParam!):user! # check
-	deleteUser(_id:String!):Boolean! # check
+	updateUser(id:String!,data:userParam!):user! # check
+	deleteUser(id:String!):Boolean! # check
 
 	createChannel(data:channelParam!): channel! #check
-	addMember(_id:String!,user_id:String!):channel! # check
-	updateChannel(_id:String!,data:channelUpdateParam!): channel! # check
-	deleteChannel(_id:String):Boolean! #check
+	addMember(id:String!,user_id:String!):channel! # check
+	updateChannel(id:String!,data:channelUpdateParam!): channel! # check
+	deleteChannel(id:String):Boolean! #check
 
 	sendMessage(receiver:receiver!,message:String!):message! #check
 }
