@@ -4,8 +4,13 @@ import { getChannelMessages, sendMessage } from "../../controller/messageControl
 import { ISendMessage } from "../../model/message";
 import { NewRequest } from "../../middleware/Auth";
 import { getChannelResolver } from "./channelResolver";
+import { validateUser } from "../../validator";
 
-export const getChannelMessagesResolver = async ({ id }: IIdentifier) => {
+export const getChannelMessagesResolver = async (
+  { id }: IIdentifier,
+  req: NewRequest,
+) => {
+  validateUser(req);
   await getChannel(id);
   return await getChannelMessages(id);
 };
@@ -14,6 +19,7 @@ export const sendMessageResolver = async (
   { message, receiver }: ISendMessage,
   req: NewRequest,
 ) => {
-  await getChannelResolver({ id: receiver?.id });
+  validateUser(req);
+  await getChannelResolver({ id: receiver?.id }, req);
   return await sendMessage(req.user?.id, { message, receiver });
 };

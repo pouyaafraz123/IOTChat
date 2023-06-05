@@ -1,7 +1,7 @@
 import { IMUser } from "./channel";
 import Mongoose, { Model } from "mongoose";
 
-export type TReceiverType = "channel" | "user"
+export type TReceiverType = "channel" | "user";
 
 export interface IMessage {
   _id: Mongoose.Types.ObjectId;
@@ -14,9 +14,9 @@ export interface IMessage {
 export interface ISendMessage {
   receiver: {
     id: string;
-    type: TReceiverType
-  },
-  message: string
+    type: TReceiverType;
+  };
+  message: string;
 }
 
 const messageSchema = new Mongoose.Schema<IMessage, Model<IMessage>>({

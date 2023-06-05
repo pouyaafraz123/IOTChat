@@ -13,13 +13,13 @@ import { IUser, IUserParam } from "../../model/user";
 import { createError } from "../../utils/errorHandler";
 import { checkPassword, createToken } from "../../utils/auth";
 import { NewRequest } from "../../middleware/Auth";
-import { validateUserdata } from "../../validator";
+import { belongToUser, validateUser, validateUserdata } from "../../validator";
 
-export const getUsersResolver = async ({
-                                         page,
-                                         per_page,
-                                         query,
-                                       }: IPaginationParam & ISearchParam) => {
+export const getUsersResolver = async (
+  { page, per_page, query }: IPaginationParam & ISearchParam,
+  req: NewRequest,
+) => {
+  validateUser(req);
   return await getUsers(page, per_page, query);
 };
 
@@ -32,9 +32,11 @@ export const getUserResolver = async ({ id }: IIdentifier) => {
   createError("User Not Found!", 404);
 };
 
-export const getUserByUsernameResolver = async ({
-                                                  username,
-                                                }: Partial<IUser>) => {
+export const getUserByUsernameResolver = async (
+  { username }: Partial<IUser>,
+  req: NewRequest,
+) => {
+  validateUser(req);
   const user = await getUserByUsername(username || "");
 
   if (!!user) {
@@ -43,7 +45,11 @@ export const getUserByUsernameResolver = async ({
   createError("User Not Found!", 404);
 };
 
-export const getUserByEmailResolver = async ({ email }: Partial<IUser>) => {
+export const getUserByEmailResolver = async (
+  { email }: Partial<IUser>,
+  req: NewRequest,
+) => {
+  validateUser(req);
   const user = await getUserByEmail(email || "");
   if (!!user) {
     return user;
@@ -74,20 +80,32 @@ export const loginResolver = async ({ data }: Params<Partial<IUserParam>>) => {
 };
 
 export const getCurrentUserResolver = ({}, req: NewRequest) => {
+  validateUser(req);
   return req.user;
 };
 
-export const updateUserResolver = async ({
-                                           data,
-                                           id,
-                                         }: Params<IUserParam> & IIdentifier) => {
+export const updateUserResolver = async (
+  { data, id }: Params<IUserParam> & IIdentifier,
+  req: NewRequest,
+) => {
+  validateUser(req);
+  belongToUser(req, id);
   return await updateUser(id, await validateUserdata({ ...data }));
 };
 
-export const deleteUserResolver = async ({ id }: IIdentifier) => {
+export const deleteUserResolver = async (
+  { id }: IIdentifier,
+  req: NewRequest,
+) => {
+  validateUser(req);
+  belongToUser(req, id);
   return deleteUser(id);
 };
 
-export const getUserChannelsResolver = async ({ id }: IIdentifier) => {
+export const getUserChannelsResolver = async (
+  { id }: IIdentifier,
+  req: NewRequest,
+) => {
+  validateUser(req);
   return await getUserChannels(id);
 };

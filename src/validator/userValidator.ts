@@ -17,7 +17,9 @@ export const validateUserdata = async ({
                                          password,
                                          username,
                                        }: IUserParam) => {
-  const errors: { [key: string]: string }[] = [];
+  const errors: {
+    [key: string]: string;
+  }[] = [];
 
   const __ref = trimUserdata(
     firstname,
@@ -40,24 +42,36 @@ export const validateUserdata = async ({
 
   if (
     validator.isEmpty(username) ||
-    !validator.isLength(username, { min: 3 })
+    !validator.isLength(username, {
+      min: 3,
+    })
   ) {
-    errors.push({ username: "username must have minimum length of 3" });
+    errors.push({
+      username: "username must have minimum length of 3",
+    });
   }
   if (validator.isEmpty(firstname)) {
-    errors.push({ firstname: "firstname cannot be empty" });
+    errors.push({
+      firstname: "firstname cannot be empty",
+    });
   }
   if (validator.isEmpty(lastname)) {
-    errors.push({ lastname: "lastname cannot be empty" });
+    errors.push({
+      lastname: "lastname cannot be empty",
+    });
   }
   if (validator.isEmpty(displayName)) {
     displayName = username;
   }
   if (!validator.isEmail(email)) {
-    errors.push({ email: "invalid email" });
+    errors.push({
+      email: "invalid email",
+    });
   }
   if (!!phone && !validator.isMobilePhone(phone)) {
-    errors.push({ phone: "invalid phone number" });
+    errors.push({
+      phone: "invalid phone number",
+    });
   }
   const passwordErrors = validatePassword(password);
   passwordErrors.forEach((err) => {

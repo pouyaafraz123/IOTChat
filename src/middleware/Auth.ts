@@ -16,7 +16,9 @@ const auth = async (req: NewRequest, res: Response, next: NextFunction) => {
     return next();
   }
   const token = authHeader.split(" ")[1];
-  const key = await fs.readFile(path.join(__dirname, "../../", "jwt_token.key"));
+  const key = await fs.readFile(
+    path.join(__dirname, "../../", "jwt_token.key"),
+  );
   try {
     const data = jwt.verify(token, key);
     if (typeof data === "string") return next();

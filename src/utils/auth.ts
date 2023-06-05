@@ -14,7 +14,11 @@ export const checkPassword = async (password: string, userPassword: string) => {
 export const createToken = async (user_id: string) => {
   const p = path.join(__dirname, "../../", "jwt_token.key");
   const key = await fs.readFile(p);
-  return jwt.sign({
-    userId: user_id,
-  }, key, { expiresIn: "1h" });
+  return jwt.sign(
+    {
+      userId: user_id,
+    },
+    key,
+    { expiresIn: "1h", algorithm: "HS512" },
+  );
 };

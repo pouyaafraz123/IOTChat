@@ -52,7 +52,7 @@ app.use(
       const code = err.originalError.code || 500;
       return { message: message, status: code, data: data };
     },
-  }),
+  })
 );
 
 mongoose
